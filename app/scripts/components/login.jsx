@@ -85,7 +85,7 @@ var LoginContainer = React.createClass({
     // var resultPromise = $.ajax(url).then(function(data){
     //   // console.log(data);
     // });
-
+    var self = this;
     $(document).on('submit', '#login', function(e){
       e.preventDefault();
 
@@ -95,15 +95,18 @@ var LoginContainer = React.createClass({
       var password = $('#password-login').val();
       var loginUrl = url +'login?username=' + encodeURI(username) + '&password=' + encodeURI(password);
       console.log(loginUrl);
-      var self = this;
+
+      // console.log(self.props.router);
       $.ajax(loginUrl, {
         success: function(response){
-          alert("success!");
-          // var router = this.self.router;
-          // router.navigate('/messages', {trigger:true});
-          // alert('You logged in!');
-          console.log(self);
+          // alert("success!");
+          console.log(response.sessionToken)
+          localStorage.setItem('token', response.sessionToken);
+
+          var router = self.props.router;
+          router.navigate('messages/', {trigger:true});
         },
+
         error: function(xhr){
           $('.error').html(xhr.responseJSON.error);
           alert('Incorrect login');
@@ -112,6 +115,7 @@ var LoginContainer = React.createClass({
     });
   },
   render: function(){
+    console.log(this.props.router);
     return(
       <div className="container">
         <div className="row">

@@ -9,7 +9,7 @@ var MessageContainer = require('./components/messages.jsx').MessageContainer;
 var AppRouter = Backbone.Router.extend({
   routes: {
     '': 'index',
-    '/messages': 'messages'
+    'messages/': 'messages'
   },
   index: function(){
     ReactDOM.render(
