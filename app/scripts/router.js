@@ -2,7 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Backbone = require('backbone');
 
-var LoginContainer = require('./components/login.jsx').LoginContainer;
+var setupParse = require('./parseUtilities').setupParse;
+var LoginSignUpContainer = require('./components/login.jsx').LoginSignUpContainer;
 var MessageContainer = require('./components/messages.jsx').MessageContainer;
 
 
@@ -11,9 +12,12 @@ var AppRouter = Backbone.Router.extend({
     '': 'index',
     'messages/': 'messages'
   },
+  initialize: function(){
+    setupParse('carolinesparseserver', 'slumber')
+  },
   index: function(){
     ReactDOM.render(
-      React.createElement(LoginContainer, {router:this}),
+      React.createElement(LoginSignUpContainer, {router:this}),
       document.getElementById('app')
     );
   },
