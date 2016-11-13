@@ -56,6 +56,7 @@ var Signin = React.createClass({
   },
   handleUsernameInput: function(e){
     this.setState({username: e.target.value})
+    // console.log(this.state.username);
   },
   handlePasswordInput: function(e){
     this.setState({password: e.target.value})
@@ -64,7 +65,7 @@ var Signin = React.createClass({
     e.preventDefault();
     var username= this.state.username;
     var password= this.state.password;
-    console.log('you signed in')
+    console.log(username)
     this.props.signIn(username, password);
   },
   render: function(){

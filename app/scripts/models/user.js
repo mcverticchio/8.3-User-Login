@@ -15,6 +15,8 @@ var User = Backbone.Model.extend({
   signIn: function(username, password){
    $.ajax('https://caroline24.herokuapp.com/' + 'login?username=' + encodeURI(username) + '&password=' + encodeURI(password)).then(function(response){
      localStorage.setItem('token', response.sessionToken);
+     localStorage.setItem('username', username);
+    //  console.log(localStorage.getItem('username'))
      Backbone.history.navigate('messages/', {trigger: true});
    })
   },

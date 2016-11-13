@@ -52,7 +52,7 @@ var MessageList = React.createClass({
     var messageList = messages.map(function(data){
       return (
           <div key={data.get("objectId") || data.cid} className="list-group-item">
-            <strong>{localStorage.getItem('username')}:</strong> {data.get('message')}
+            <strong>{data.get('username')}:</strong> {data.get('message')}
           </div>
         )
     });
@@ -75,10 +75,11 @@ var MessageContainer = React.createClass({
   componentWillMount: function(){
     var self = this;
     // var messageCollection = this.state.messageCollection;
-    var messageCollection = new MessageCollection();
+    var messageCollection = this.state.messageCollection
     messageCollection.fetch().then(() => {
       self.setState({messageCollection: messageCollection});
-      console.log(messageCollection)
+      // var local= localStorage.user;
+      // console.log(localStorage.getItem('username'))
     });
   },
   handleMessagePost: function(messageData){
