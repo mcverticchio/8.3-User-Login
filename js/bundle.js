@@ -58,6 +58,7 @@ var Signin = React.createClass({displayName: "Signin",
   },
   handleUsernameInput: function(e){
     this.setState({username: e.target.value})
+    // console.log(this.state.username);
   },
   handlePasswordInput: function(e){
     this.setState({password: e.target.value})
@@ -66,7 +67,7 @@ var Signin = React.createClass({displayName: "Signin",
     e.preventDefault();
     var username= this.state.username;
     var password= this.state.password;
-    console.log('you signed in')
+    console.log(username)
     this.props.signIn(username, password);
   },
   render: function(){
@@ -232,7 +233,7 @@ var MessageList = React.createClass({displayName: "MessageList",
     var messageList = messages.map(function(data){
       return (
           React.createElement("div", {key: data.get("objectId") || data.cid, className: "list-group-item"}, 
-            React.createElement("strong", null, localStorage.getItem('username'), ":"), " ", data.get('message')
+            React.createElement("strong", null, data.get('username'), ":"), " ", data.get('message')
           )
         )
     });
@@ -255,10 +256,11 @@ var MessageContainer = React.createClass({displayName: "MessageContainer",
   componentWillMount: function(){
     var self = this;
     // var messageCollection = this.state.messageCollection;
-    var messageCollection = new MessageCollection();
+    var messageCollection = this.state.messageCollection
     messageCollection.fetch().then(() => {
       self.setState({messageCollection: messageCollection});
-      console.log(messageCollection)
+      // var local= localStorage.user;
+      // console.log(localStorage.getItem('username'))
     });
   },
   handleMessagePost: function(messageData){
@@ -359,6 +361,8 @@ var User = Backbone.Model.extend({
   signIn: function(username, password){
    $.ajax('https://caroline24.herokuapp.com/' + 'login?username=' + encodeURI(username) + '&password=' + encodeURI(password)).then(function(response){
      localStorage.setItem('token', response.sessionToken);
+     localStorage.setItem('username', username);
+    //  console.log(localStorage.getItem('username'))
      Backbone.history.navigate('messages/', {trigger: true});
    })
   },
@@ -407,7 +411,7 @@ var Backbone = require('backbone');
 var setupParse = require('./parseUtilities').setupParse;
 var LoginSignUpContainer = require('./components/login.jsx').LoginSignUpContainer;
 var MessageContainer = require('./components/messages.jsx').MessageContainer;
-
+var token = localStorage.getItem('token');
 
 var AppRouter = Backbone.Router.extend({
   routes: {
@@ -415,7 +419,7 @@ var AppRouter = Backbone.Router.extend({
     'messages/': 'messages'
   },
   initialize: function(){
-    setupParse('carolinesparseserver', 'slumber')
+    setupParse('carolinesparseserver', 'slumber', token)
   },
   index: function(){
     ReactDOM.render(
